@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ServerApp.Models;
 using ServerApp.Models.DTO.Incoming;
 using ServerApp.Models.DTO.Outgoing;
@@ -66,16 +67,15 @@ namespace ServerApp.Controllers
             //return new JsonResult("Something went wrong") { StatusCode = 500 };
         }
 
-        [HttpGet]
-        [Route("{id:Guid}")]
-        public IActionResult GetDriver([FromRoute] Guid id)
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetDriver(Guid id)
         {
-            var driver = _context.Drivers.FirstOrDefault(x => x.Id == id);
-            //if (driver == null)
-            //    return NotFound();
-            return Ok(driver);
+            var driver = await _context.Drivers.FirstOrDefaultAsync(x => x.Id == id);
+            if (driver == null)
+                return NotFound();
+            return Ok(_mapper.Map<DriverForReturnDto>(driver));
         }
-        
+
         [HttpPut]
         public IActionResult UpdateDriver(Guid id, Driver data)
         {
@@ -104,6 +104,6 @@ namespace ServerApp.Controllers
             _context.Drivers.Remove(existingDriver);
             _context.SaveChanges();
             return NoContent();
-        }   
+        }
     }
 }

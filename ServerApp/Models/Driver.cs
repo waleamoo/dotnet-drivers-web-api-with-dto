@@ -1,7 +1,10 @@
-﻿namespace ServerApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ServerApp.Models
 {
     public class Driver
     {
+        [Key]
         public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

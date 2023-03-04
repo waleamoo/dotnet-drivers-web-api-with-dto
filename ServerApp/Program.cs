@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ServerApp.Models;
+using ServerApp.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 // 1. ADD DATACONTEXT 
@@ -13,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // 2. Add AutoMapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(DriverProfiles).Assembly);
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
